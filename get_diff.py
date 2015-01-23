@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+#This script finds the age difference between the newest flow entry
+#and the oldest flow entry. This is to get a rough estimate on how
+#far off the entries in the db that were created while the clock was
+#off are.
+
 #import these functions/classes directly
 from datetime import datetime
 from elasticsearch import Elasticsearch
@@ -26,27 +31,27 @@ es = Elasticsearch(
 #Call the search function inside of Elasticsearch and give back 1 response
 #sorted by date. This will be the oldest entry in the dataset
 first_result = es.search(
-    index='flowstash-2015.01.16',
-    doc_type='netflow',
-    size=1,
-    body={
-      'sort': [
-        {'@timestamp': {'order': 'asc'}}
-      ]
-    }
+  index='flowstash-2015.01.16',
+  doc_type='netflow',
+  size=1,
+  body={
+    'sort': [
+      {'@timestamp': {'order': 'asc'}}
+    ]
+  }
 )
 
 #Call the search function inside of Elasticsearch and give back 1 response
 #sorted by date. This will be the newest entry in the dataset
 last_result = es.search(
-    index='flowstash-2015.01.16',
-    doc_type='netflow',
-    size=1,
-    body={
-      'sort': [
-        {'@timestamp': {'order': 'desc'}}
-      ]
-    }
+  index='flowstash-2015.01.16',
+  doc_type='netflow',
+  size=1,
+  body={
+    'sort': [
+      {'@timestamp': {'order': 'desc'}}
+    ]
+  }
 )
 
 #The search function returns a nested dictionary that contains metadata for 
